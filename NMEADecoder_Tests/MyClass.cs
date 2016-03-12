@@ -21,13 +21,10 @@ namespace NeamDecoder_Tests
 			{
 				GPGLL gpgll = new GPGLL(gpgllSentences[i]);
 				Assert.IsNotNull (gpgll, "The parsing of a $GPGLL string failed with input " + gpgllSentences [i]);
-<<<<<<< HEAD
                 Assert.IsNotNull(gpgll.Longitude);
-                Assert.IsnotNull(gpgll.Latidude);
+                Assert.IsNotNull(gpgll.Latitude);
                 Assert.IsNotNull(gpgll.FixTime);
-                Assert.InNotNull(gpgll.ActiveState);
-=======
->>>>>>> Mono
+                Assert.IsNotNull(gpgll.ActiveState);
 			}
 
 		}
