@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using NMEADecoder.Sentences;
+using NMEA_Tools.Decoder.Sentences;
 
 namespace NeamDecoder_Tests
 {

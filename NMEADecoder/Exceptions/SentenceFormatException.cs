@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeamDecoder.Exceptions
+namespace NMEA_Tools.Decoder.Exceptions
 {
-    internal class SentenceFormatException : Exception
+    public class SentenceFormatException : Exception
     {
         public SentenceFormatException(string message, Exception innerException) : base(message,innerException)
         {

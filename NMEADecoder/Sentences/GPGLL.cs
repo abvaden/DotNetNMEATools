@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-using NMEADecoder.Words;
+using NMEA_Tools.Decoder.Words;
+using NMEA_Tools.Decoder;
 
-namespace NMEADecoder.Sentences
+namespace NMEA_Tools.Decoder.Sentences
 {
     /// <summary>
     /// Example string

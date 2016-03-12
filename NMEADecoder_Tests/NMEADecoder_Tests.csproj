@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{067456C0-086C-46A8-B37F-1405717B7BFC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>NMEADecoder_Tests</RootNamespace>
+    <RootNamespace>NMEA_Tools.NMEADecoder_Tests</RootNamespace>
     <AssemblyName>NMEADecoder_Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>

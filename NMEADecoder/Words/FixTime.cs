@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NMEADecoder.Words
+namespace NMEA_Tools.Decoder.Words
 {
     public class FixTime : Word
     {

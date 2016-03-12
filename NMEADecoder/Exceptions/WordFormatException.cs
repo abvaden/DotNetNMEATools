@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NMEADecoder.Exceptions
+namespace NMEA_Tools.Decoder.Exceptions
 {
     public class WordFormatException : Exception
     {

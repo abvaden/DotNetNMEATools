@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 
-namespace NMEADecoder.Sentences
+namespace NMEA_Tools.Decoder.Sentences
 {
     public abstract class Sentence : INotifyDataErrorInfo
     {
