@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NMEADecoder\NMEADecoder.csproj">
+      <Project>{17f0a9e3-e7cd-4696-aa57-39b647873ca5}</Project>
+      <Name>NMEADecoder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Serial Listener\Serial Listener.csproj">
       <Project>{31764810-5bd7-4735-8378-9d5a89e33e3e}</Project>
       <Name>Serial Listener</Name>

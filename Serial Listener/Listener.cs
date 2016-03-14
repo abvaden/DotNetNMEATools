@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using System.IO;
 
 namespace NMEA_Tools.Serial
 {
@@ -171,6 +172,7 @@ namespace NMEA_Tools.Serial
         private object _AddingLock = new object();
 
         private ConcurrentQueue<byte> _ReceivedBytes;
+        private bool _ReceiveLoop;
         #endregion
 
         #region Private Static Fields
@@ -212,11 +214,12 @@ namespace NMEA_Tools.Serial
             if(!_IsInitalizied)
             {
                 throw new ListenerException("Port must be initalizied before opening", null);
-                //_SetupPort();
             }
 
             _Port.Open();
-            _Port.DataReceived += _Port_DataReceived;
+            _ReceiveLoop = true;
+            System.Threading.Thread serialThread = new System.Threading.Thread(new System.Threading.ThreadStart(_PortReadThread));
+            serialThread.Start();
         }
 
         public IDisposable Subscribe(IObserver<IListenerSubscriber> observer)
@@ -326,15 +329,49 @@ namespace NMEA_Tools.Serial
             _NotifySubscribersTask = new Task(new Action(_StringReceived));
         }
 
-        private void _Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void _PortReadThread()
         {
-            if(e.EventType == SerialData.Chars)
+            while (_ReceiveLoop)
             {
-                lock(_AddingLock)
+                try
+                {
+                    if (_Port.BytesToRead != 0)
+                    {
+                        byte[] buffer = new byte[_Port.BytesToRead];
+                        Task<int> readTask = _Port.BaseStream.ReadAsync(buffer, 0, buffer.Length);
+                        while (true)
+                        {
+                            System.Threading.Thread.Sleep(1);
+                            if (readTask.IsCompleted)
+                            {
+                                break;
+                            }
+                        }
+                        _SerialDataEvent(buffer);
+                    }
+                    System.Threading.Thread.Sleep(1);
+                }
+                catch(Exception excpt)
+                {
+                    if(_Port.IsOpen)
+                    {
+                        _Port.Close();
+                        _ReceiveLoop = false;
+                    }
+                    System.Diagnostics.Debug.WriteLine(excpt.Message);
+                }
+            }   
+        }
+
+        private void _SerialDataEvent(byte[] bytes)
+        {
+            
+            lock (_AddingLock)
+            {
+                for (int i = 0; i < bytes.Length; i++)
                 {
                     // Get the byte that was just received
-                    byte receivedByte = (byte)_Port.ReadByte();
-                    //System.Diagnostics.Debug.Write(Convert.ToChar(receivedByte));
+                    byte receivedByte = bytes[i];
 
                     // Check if the byte was part of the the line ending chars if not then reset and start looking for the ending chars again
                     if (_LastByteWasEnding || (receivedByte == _SentenceEndChars[0]))

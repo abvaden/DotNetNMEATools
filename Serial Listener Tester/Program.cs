@@ -36,11 +36,13 @@ namespace Serial_Listener_Tester
             {
                 Console.CursorTop = 10;
                 Console.CursorLeft = 0;
-                Console.Write("Current Sentence: {0}",listener.LastString);
-                while(Console.CursorTop == 10)
+                if(listener.LastString.Contains("GPGLL"))
                 {
-                    Console.Write(' ');
+                    NMEA_Tools.Decoder.Sentences.GPGLL gpgll = new NMEA_Tools.Decoder.Sentences.GPGLL(listener.LastString);
+                    Console.WriteLine(gpgll.Latitude.Value);
+                    Console.WriteLine(gpgll.Longitude.Value);
                 }
+                //Console.Write("Current Sentence: {0}",listener.LastString);
                 System.Threading.Thread.Sleep(100);
             }
         }
