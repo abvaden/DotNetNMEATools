@@ -8,7 +8,7 @@ using System.IO;
 
 namespace NMEA_Tools.Serial
 {
-    /// TODO: Improve the thread safety of this class and develop test to ennsure that it is thread safe.
+    /// TODO: Improve the thread safety of this class and develop test to ensure that it is thread safe.
     // of special note is the LastString Property, there could be issues regarding the thread safety of that 
     /// <summary>
     /// The listener class will listen to serial port traffic for lines of data and will push notifications to subscrubers

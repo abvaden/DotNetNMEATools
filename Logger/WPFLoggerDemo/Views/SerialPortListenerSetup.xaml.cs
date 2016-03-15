@@ -18,9 +18,9 @@ namespace WPFLoggerDemo.Views
     /// <summary>
     /// Interaction logic for SerialPortListener.xaml
     /// </summary>
-    public partial class SerialPortListener : UserControl
+    public partial class SerialPortListenerSetup : UserControl
     {
-        public SerialPortListener()
+        public SerialPortListenerSetup()
         {
             InitializeComponent();
         }
