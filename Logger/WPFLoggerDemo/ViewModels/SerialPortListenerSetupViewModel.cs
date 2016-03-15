@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using NMEA_Tools.Serial;
 
 namespace WPFLoggerDemo.ViewModels
 {
@@ -13,6 +14,7 @@ namespace WPFLoggerDemo.ViewModels
     {
         public double StopBits { get; set; }
         public double DataBits { get; set; }
+        public string LineEndingCharacters { get; set; }
 
         public Array Paritys { get; private set; }
         public double[] AvaialbeBaudRates { get; private set; }
@@ -28,9 +30,9 @@ namespace WPFLoggerDemo.ViewModels
         public double SelectedBaudRate { get; set; }
         public Parity SelectedParity { get; set; }
 
-        private NMEA_Tools.Serial.Listener _Listener;
+        private Listener _Listener;
 
-        public SerialPortListenerSetupViewModel()
+        public SerialPortListenerSetupViewModel(Listener listener)
         {
             #region Populate the data for the combo boxes
             AvaialbeBaudRates = new double[]
@@ -45,11 +47,12 @@ namespace WPFLoggerDemo.ViewModels
             #endregion
 
             // Set the defaults
+            LineEndingCharacters = "\r\n";
             DataBits = 8;
             StopBits = 1;
             SelectedBaudRate = AvaialbeBaudRates[5];
             SelectedParity = Parity.None;
-            _Listener = new NMEA_Tools.Serial.Listener();
+            _Listener = listener;
         }
 
         #region INotifyPropertyChanged
