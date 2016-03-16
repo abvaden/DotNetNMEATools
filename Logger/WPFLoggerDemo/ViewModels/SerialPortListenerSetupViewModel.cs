@@ -11,10 +11,10 @@ using System.Windows.Input;
 
 namespace WPFLoggerDemo.ViewModels
 {
-    public class SerialPortListenerSetupViewModel : INotifyPropertyChanged
+    public class SerialPortListenerSetupViewModel : ViewModelBase
     {
         #region Public Properties
-        public double StopBits { get; set; }
+        public StopBits SelectedStopBits { get; set; }
         public double DataBits { get; set; }
         public string LineEndingCharacters { get; set; }
         public string SelectedPort { get; set; }
@@ -31,7 +31,14 @@ namespace WPFLoggerDemo.ViewModels
             set
             {
                 _LineEnding_r1Checked = value;
-                _LineEnding_n1Checked = !value;
+                if(value == true)
+                {
+                    _LineEnding_n1Checked = false;
+                }
+
+
+                RaisePropertyChanged();
+                RaisePropertyChanged("LineEnding_n1Checked");
             }
         }
         public bool? LineEnding_n1Checked
@@ -43,7 +50,14 @@ namespace WPFLoggerDemo.ViewModels
             set
             {
                 _LineEnding_n1Checked = value;
-                _LineEnding_r1Checked = !value;
+                if(value == true)
+                {
+                    _LineEnding_r1Checked = false;
+                }
+                
+
+                RaisePropertyChanged();
+                RaisePropertyChanged("LineEnding_r1Checked");
             }
         }
         public bool? LineEnding_r2Checked
@@ -55,7 +69,14 @@ namespace WPFLoggerDemo.ViewModels
             set
             {
                 _LineEnding_r2Checked = value;
-                _LineEnding_n2Checked = !value;
+                if(value == true)
+                {
+                    _LineEnding_n2Checked = false;
+                }
+                
+
+                RaisePropertyChanged();
+                RaisePropertyChanged("LineEnding_n2Checked");
             }
         }
         public bool? LineEnding_n2Checked
@@ -67,7 +88,14 @@ namespace WPFLoggerDemo.ViewModels
             set
             {
                 _LineEnding_n2Checked = value;
-                _LineEnding_r2Checked = !value;
+                if(value == true)
+                {
+                    _LineEnding_r2Checked = false;
+                }
+                
+
+                RaisePropertyChanged();
+                RaisePropertyChanged("LineEnding_r2Checked");
             }
         }
         public bool? LineEnding_r3Checked
@@ -79,7 +107,14 @@ namespace WPFLoggerDemo.ViewModels
             set
             {
                 _LineEnding_r3Checked = value;
-                _LineEnding_n3Checked = !value;
+                if(value == true)
+                {
+                    _LineEnding_n3Checked = false;
+                }
+                
+
+                RaisePropertyChanged();
+                RaisePropertyChanged("LineEnding_n3Checked");
             }
         }
         public bool? LineEnding_n3Checked
@@ -91,12 +126,20 @@ namespace WPFLoggerDemo.ViewModels
             set
             {
                 _LineEnding_n3Checked = value;
-                _LineEnding_r3Checked = !value;
+                if(value == true)
+                {
+                    _LineEnding_r3Checked = false;
+                }
+                
+
+                RaisePropertyChanged();
+                RaisePropertyChanged("LineEnding_r3Checked");
             }
         }
         #endregion
 
         public Array Paritys { get; private set; }
+        public Array StopBits { get; private set; }
         public double[] AvaialbeBaudRates { get; private set; }
         public string[] AvailablePorts
         {
@@ -105,7 +148,7 @@ namespace WPFLoggerDemo.ViewModels
                 return _Listener.GetAvailablePorts();
             }
         }
-        public ICommand OpenCommand { get; }
+        public RelayCommand OpenCommand { get; }
         #endregion
 
         private Listener _Listener;
@@ -128,34 +171,80 @@ namespace WPFLoggerDemo.ViewModels
                 57600, 115200, 230400,
                 460800, 921600
             };
-            Paritys = Enum.GetValues(typeof(System.IO.Ports.Parity));
+            Paritys = Enum.GetValues(typeof(Parity));
+            StopBits = Enum.GetValues(typeof(StopBits));
             #endregion
 
             // Set the defaults
             LineEndingCharacters = "\r\n";
             DataBits = 8;
-            StopBits = 1;
             SelectedBaudRate = AvaialbeBaudRates[5];
             SelectedParity = Parity.None;
+            SelectedStopBits = System.IO.Ports.StopBits.One;
             _Listener = listener;
 
-            OpenCommand = new Command
+            LineEnding_r1Checked = true;
+            LineEnding_n2Checked = true;
+            LineEnding_n3Checked = false;
+            LineEnding_r3Checked = false;
+
+            OpenCommand = new RelayCommand(OpenCommand_Execute, OpenCommand_CanExecute);
         }
 
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged([CallerMemberName] string caller = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(caller));
-        }
-        #endregion INotifyPropertyChanged
+        
 
         private bool OpenCommand_CanExecute()
         {
-            return false;
+            if (this.SelectedPort != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
 
-        private void OpenCommand_Execute();
+        private void OpenCommand_Execute()
+        {
+            _Listener.BaudRate = (int)this.SelectedBaudRate;
+            _Listener.DataBits = (int)this.DataBits;
+            _Listener.Parity = this.SelectedParity;
+            _Listener.PortName = this.SelectedPort;
+            _Listener.StopBits = this.SelectedStopBits;
+            #region Line Ending
+            StringBuilder lineEndingBuilder = new StringBuilder();
+
+            if (LineEnding_n1Checked == true)
+            {
+                lineEndingBuilder.Append('\n');
+            }
+            if (LineEnding_r1Checked == true)
+            {
+                lineEndingBuilder.Append('\r');
+            }
+            if (LineEnding_n2Checked == true)
+            {
+                lineEndingBuilder.Append('\n');
+            }
+            if (LineEnding_r2Checked == true)
+            {
+                lineEndingBuilder.Append('\r');
+            }
+            if (LineEnding_n3Checked == true)
+            {
+                lineEndingBuilder.Append('\n');
+            }
+            if (LineEnding_r3Checked == true)
+            {
+                lineEndingBuilder.Append('\r');
+            }
+            
+            _Listener.LineEndChars = lineEndingBuilder.ToString();
+            #endregion
+            _Listener.SetupPort();
+            _Listener.Open();
+        }
     }
 }

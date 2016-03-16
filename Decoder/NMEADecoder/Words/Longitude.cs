@@ -10,6 +10,7 @@ namespace NMEA_Tools.Decoder.Words
     {
 		public string Value { get { return _Value; } }
 		private string _Value;
+
         public double Minutes
         {
             get
@@ -32,9 +33,11 @@ namespace NMEA_Tools.Decoder.Words
             }
         }
 
+
         public Longitude(string value) : base("Longitude")
         {
             _Value = value;
+
         }
     }
 }

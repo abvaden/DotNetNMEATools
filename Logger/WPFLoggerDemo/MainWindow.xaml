@@ -4,20 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Views="clr-namespace:WPFLoggerDemo.Views"
+        xmlns:NMEAViews="clr-namespace:WPFLoggerDemo.Views.NMEASentence"
         xmlns:local="clr-namespace:WPFLoggerDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="750" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="335"/>
+            <ColumnDefinition Width="335"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <Views:SerialPortListenerSetup Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" MinWidth="335"
                                        DataContext="{Binding Path=SerialPortSetupViewModel}"/>
+
+        <Views:RawPortData Grid.Row="0" Grid.Column="1" DataContext="{Binding Path=RawPortDataViewModel}" />
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <NMEAViews:MapView Grid.Row="0" Grid.Column="1" DataContext="{Binding Path=MapViewModel}"/>
+        </Grid>
     </Grid>
 </Window>

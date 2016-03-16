@@ -13,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFLoggerDemo
+namespace WPFLoggerDemo.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RawPortData.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class RawPortData : UserControl
     {
-        public MainWindow()
+        public RawPortData()
         {
             InitializeComponent();
-            this.DataContext = new MainWindowViewModel();
         }
     }
 }

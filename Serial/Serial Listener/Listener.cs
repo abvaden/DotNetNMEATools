@@ -143,7 +143,12 @@ namespace NMEA_Tools.Serial
         {
             get
             {
-                return _SentenceEndChars.ToString();
+                StringBuilder builder = new StringBuilder();
+                foreach(byte value in _SentenceEndChars)
+                {
+                    builder.Append(Convert.ToChar(value));
+                }
+                return builder.ToString();
             }
             set
             {
