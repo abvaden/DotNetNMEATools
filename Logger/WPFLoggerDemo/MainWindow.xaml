@@ -7,10 +7,10 @@
         xmlns:NMEAViews="clr-namespace:WPFLoggerDemo.Views.NMEASentence"
         xmlns:local="clr-namespace:WPFLoggerDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="1000">
+        Title="MainWindow" Height="750" Width="1250">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -31,7 +31,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <NMEAViews:MapView Grid.Row="0" Grid.Column="1" DataContext="{Binding Path=MapViewModel}"/>
+            
+            <NMEAViews:MapView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" DataContext="{Binding Path=MapViewModel}"/>
         </Grid>
     </Grid>
 </Window>
