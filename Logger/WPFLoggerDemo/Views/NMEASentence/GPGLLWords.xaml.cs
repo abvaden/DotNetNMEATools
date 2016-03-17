@@ -13,22 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFLoggerDemo
+namespace WPFLoggerDemo.Views.NMEASentence
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for GPGLLWords.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class GPGLLWords : UserControl
     {
-        public MainWindow()
+        public GPGLLWords()
         {
             InitializeComponent();
-            this.DataContext = new MainWindowViewModel();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Application.Current.Shutdown();
         }
     }
 }

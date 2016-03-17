@@ -5,18 +5,54 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFLoggerDemo.Views.NMEASentence"
              xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             xmlns:observed="clr-namespace:WPFLoggerDemo.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel>
-        <DockPanel DockPanel.Dock="Top" >
-            <Label Content="Longitude : " DockPanel.Dock="Left"/>
-            <Label Content="{Binding Path=Longitude}" DockPanel.Dock="Left" Name="LongtidueLabel"/>
-            <Label Content="{Binding Path=Latitude}" DockPanel.Dock="Right" Name="LatitudeLabel" />
-            <Label Content="Latitude : " DockPanel.Dock="Right" HorizontalAlignment="Right" />
-        </DockPanel>
-        <cefSharp:ChromiumWebBrowser Address="{Binding Path=BrowserAddress, Mode=TwoWay}" 
-                                     DockPanel.Dock="Bottom" 
-                                     Height="{Binding Path=BrowserHeight, Mode=TwoWay}"
-                                     Width="{Binding Path=BrowserWidth, Mode=TwoWay}"/>
-    </DockPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Content="Longitude : " 
+               Grid.Row="0" Grid.Column="0"
+               HorizontalAlignment="Right"/>
+            <Label Content="{Binding Path=Longitude}" 
+               Grid.Row="0" Grid.Column="1"
+               HorizontalAlignment="Left"/>
+            <Label Content="Latitude : " 
+               Grid.Row="0" Grid.Column="2"
+               HorizontalAlignment="Right"/>
+            <Label Content="{Binding Path=Latitude}" 
+               Grid.Row="0" Grid.Column="3"
+               HorizontalAlignment="Left"/>
+            <Label Content="Fix Time : " 
+               Grid.Row="0" Grid.Column="4"
+               HorizontalAlignment="Right"/>
+            <Label Content="{Binding Path=FixTime}" 
+               Grid.Row="0" Grid.Column="5"
+               HorizontalAlignment="Left"/>
+        </Grid>
+        
+
+        <Border Grid.Row="1" Grid.Column="0">
+            <cefSharp:ChromiumWebBrowser observed:SizeObserver.Observe="True"
+                                         observed:SizeObserver.ObservedHeight="{Binding Path=BrowserHeight, Mode=OneWayToSource}"
+                                         observed:SizeObserver.ObservedWidth="{Binding Path=BrowserWidth, Mode=OneWayToSource}"
+                                         Address="{Binding Path=BrowserAddress, Mode=TwoWay}" />
+        </Border>
+    </Grid>
 </UserControl>

@@ -9,20 +9,12 @@ using System.IO;
 
 namespace WPFLoggerDemo.ViewModels.NMEASentences
 {
-    public class MapViewModel : ViewModelBase, IListenerSubscriber, IDisposable
+    public class MapViewModel : DataViewModelBase, IListenerSubscriber, IDisposable
     {
         public string BrowserAddress
         {
             get
             {
-                /*
-                string key = "AIzaSyC3xLwB_Z7chKbaSvWzqZxljXGa-TGo8IM";
-                string page = string.Format("<iframe src=\"https://www.google.com/maps/embed/v1/view?center={0},{1}&key={2} allowfullscreen />",
-                              Longitude,
-                              Latitude,
-                              key);
-                return page;
-                */
                 string value = "file://" + _LocalPage;
                 return value.Replace("\\","/");
             }
@@ -35,46 +27,40 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
         public string Latitude { get; private set; }
         public string BrowserHeight { get; set; }
         public string BrowserWidth { get; set; }
+        public string FixTime { get; private set;}
 
         public CefSharp.Wpf.ChromiumWebBrowser Browser { get; set; }
 
         #region Private Fields
-        private Listener _Listener;
-
-        // example google maps link https://www.google.com/maps/place/@4916.45,N,12311.12,W
-        private string _GoolgeMaps = @"https://www.google.com/maps/place/@";
-        private string _GoogleMapsLocation;
         private string _BrowserAddress;
 
         private DateTime _LastUpdate;
         private TimeSpan _MinUpdateRate;
 
         private string _LocalPage;
+
+        private NMEA_Tools.Decoder.Sentences.GPGLL _GPGLL;
         #endregion
 
-        public MapViewModel(Listener listener)
+        public MapViewModel(Listener listener) : base(listener, "Map View")
         {
             _MinUpdateRate = new TimeSpan(0, 0, 3);
             _LastUpdate = DateTime.Now;
-            _Listener = listener;
-            _Listener.Subscribe(this);
-            _LocalPage = Path.GetTempPath() + "GPSMapPage.html";
+            _LocalPage = Path.GetTempFileName().Replace(".tmp", ".html");
         }
 
-        public void SentenceReceived(string sentence)
+        public new void SentenceReceived(string sentence)
         {
             
             if (sentence.Contains("GPGLL"))
             {
                 try
                 {
-                    NMEA_Tools.Decoder.Sentences.GPGLL gpgll = new NMEA_Tools.Decoder.Sentences.GPGLL(sentence);
+                    _GPGLL = new NMEA_Tools.Decoder.Sentences.GPGLL(sentence);
 
-                    _GoogleMapsLocation = String.Format("{0},{1}",
-                    gpgll.Longitude.Value, gpgll.Latitude.Value);
-
-                    Longitude = gpgll.Longitude.Value;
-                    Latitude = gpgll.Latitude.Value;
+                    Longitude = _GPGLL.Longitude.Value;
+                    Latitude = _GPGLL.Latitude.Value;
+                    FixTime = _GPGLL.FixTime.TimeValue.ToLongTimeString();
 
                     if ((DateTime.Now - _LastUpdate) > _MinUpdateRate)
                     {
@@ -83,6 +69,7 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
                         RaisePropertyChanged("BrowserAddress");
                         RaisePropertyChanged("Longitude");
                         RaisePropertyChanged("Latitude");
+                        RaisePropertyChanged("FixTime");
                     }
                 }
                 catch
@@ -102,14 +89,19 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
 	<title>Test Page</title>
 </head>
 <body>
-	<iframe src=""https://www.google.com/maps/embed/v1/place?q={0},{1}&key=AIzaSyC3xLwB_Z7chKbaSvWzqZxljXGa-TGo8IM"" />
+	<iframe width=""{0}"" height=""{1}"" frameborder=""0"" style=""border: 0""
+src = ""https://www.google.com/maps/embed/v1/view?zoom={4}&center={2},{3}&key=AIzaSyC3xLwB_Z7chKbaSvWzqZxljXGa-TGo8IM"" allowfullscreen ></iframe>
 </body>
 </html> ",
-                    Latitude.Replace(",", ""),
-                    Longitude.Replace(",", ""));
+                    Convert.ToDouble(BrowserWidth) - 25,
+                    Convert.ToDouble(BrowserHeight) - 25,
+                    _GPGLL.Longitude.Degrees,
+                    _GPGLL.Latitude.Degrees,
+                    16);
 
             File.Delete(_LocalPage);
-            using (FileStream fileStream = System.IO.File.Create(_LocalPage))
+            _LocalPage = Path.GetTempFileName().Replace(".tmp", ".html");
+            using (FileStream fileStream = File.Create(_LocalPage))
             {
                 using (StreamWriter writer = new StreamWriter(fileStream))
                 {
@@ -119,9 +111,10 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
 
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
-            System.IO.File.Delete(_LocalPage);
+            File.Delete(_LocalPage);
+            base.Dispose();
         }
     }
 }
