@@ -13,9 +13,7 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" 
-               Content="Port Activity" 
-               FontWeight="Bold" FontSize="15"/>
+        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Content="Port Activity" />
 
         <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="10,0,0,0" Cursor="">
             <TextBox Text="{Binding Path=PortHistoryASCII, Mode=OneWay}"/>

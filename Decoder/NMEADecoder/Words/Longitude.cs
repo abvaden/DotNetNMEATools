@@ -15,86 +15,29 @@ namespace NMEA_Tools.Decoder.Words
         {
             get
             {
-                return _Minutes;
+                return 0;
             }
         }
         public double Seconds
         {
             get
             {
-                return _Seconds;
+                return 0;
             }
         }
         public double Degrees
         {
             get
             {
-                return _Degrees;
+                return 0;
             }
         }
-        public Heimsphere Hemisphere
-        {
-            get
-            {
-                return _Hemisphere;
-            }
-        }
-        public enum Heimsphere { North, South };
 
-        private Heimsphere _Hemisphere;
-        private double _Minutes;
-        private double _Seconds;
-        private double _Degrees;
 
         public Longitude(string value) : base("Longitude")
         {
             _Value = value;
-            string[] spiltValue = _Value.Split(new char[] { ',' });
 
-            if (spiltValue.Length != 2)
-            {
-                return;
-            }
-
-            #region Hemisphere
-            if (spiltValue[1] == "N")
-            {
-                _Hemisphere = Heimsphere.North;
-            }
-            else if (spiltValue[1] == "S")
-            {
-                _Hemisphere = Heimsphere.South;
-            }
-            else
-            {
-                return;
-            }
-            #endregion
-
-            #region Minutes / Seconds
-            int decimalIndex = spiltValue[0].IndexOf(".");
-            if (!Double.TryParse(spiltValue[0].Substring(decimalIndex - 2), out _Minutes))
-            {
-                // Error parsing value
-                return;
-            }
-            _Seconds = (_Minutes - Math.Floor(_Minutes)) * 60;
-            #endregion
-
-            #region Degrees
-            if (Double.TryParse(spiltValue[0].Substring(0, decimalIndex - 2), out _Degrees))
-            {
-                _Degrees += _Minutes / 60;
-                if (_Hemisphere == Heimsphere.South)
-                {
-                    _Degrees = _Degrees * -1;
-                }
-            }
-            else
-            {
-                // There was an error
-            }
-            #endregion
         }
     }
 }

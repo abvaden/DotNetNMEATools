@@ -5,22 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Views="clr-namespace:WPFLoggerDemo.Views"
         xmlns:NMEAViews="clr-namespace:WPFLoggerDemo.Views.NMEASentence"
-        xmlns:NMEAViewModels="clr-namespace:WPFLoggerDemo.ViewModels.NMEASentences"
         xmlns:local="clr-namespace:WPFLoggerDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="1250"
-        Closing="Window_Closing">
-    <Window.Resources>
-        <ResourceDictionary>
-            <DataTemplate DataType="{x:Type NMEAViewModels:GPGLLWordsViewModel}">
-                <NMEAViews:GPGLLWords DataContext="{Binding}"/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type NMEAViewModels:MapViewModel}">
-                <NMEAViews:MapView DataContext="{Binding}" />
-            </DataTemplate>
-        </ResourceDictionary>
-    </Window.Resources>
+        Title="MainWindow" Height="750" Width="1250">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -36,28 +23,16 @@
 
         <Views:RawPortData Grid.Row="0" Grid.Column="1" DataContext="{Binding Path=RawPortDataViewModel}" />
 
-        
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-
-            <ListView Grid.Column="0" Grid.Row="0" Margin="10,0,10,10"
-                      ItemsSource="{Binding Path=AvailableViewModels}" SelectedItem="{Binding Path=SelectedDataView}" 
-                      IsSynchronizedWithCurrentItem="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding Path=Name}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-            <ContentControl Grid.Column="1" Grid.Row="0"
-                            Content="{Binding Path=SelectedDataView}" />
+            
+            <NMEAViews:MapView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" DataContext="{Binding Path=MapViewModel}"/>
         </Grid>
     </Grid>
 </Window>

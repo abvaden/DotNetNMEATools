@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="25"/>
             <RowDefinition />
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
@@ -21,10 +21,9 @@
 
         <Label Grid.Row="0" Grid.Column="0" 
                HorizontalAlignment="Center" 
-               Content="Serial Port Setup" 
-               FontWeight="Bold" FontSize="15"/>
+               Content="Serial Port Setup" />
 
-        <ListBox Grid.Row="1" Grid.Column="0" Margin="10,0,5,5"
+        <ListBox Grid.Row="1" Grid.Column="0" Margin="5,5"
                  ItemsSource="{Binding Path=AvailablePorts}"
                  SelectedItem="{Binding Path=SelectedPort}"/>
 
