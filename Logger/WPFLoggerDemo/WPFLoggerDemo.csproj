@@ -110,6 +110,9 @@
     <Compile Include="ViewModels\RawPortDataViewModel.cs" />
     <Compile Include="ViewModels\SerialPortListenerSetupViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\LoggerSetup.xaml.cs">
+      <DependentUpon>LoggerSetup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NMEASentence\GPGLLWords.xaml.cs">
       <DependentUpon>GPGLLWords.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\LoggerSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NMEASentence\GPGLLWords.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
