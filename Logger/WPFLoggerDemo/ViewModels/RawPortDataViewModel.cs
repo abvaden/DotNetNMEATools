@@ -18,12 +18,29 @@ namespace WPFLoggerDemo.ViewModels
                 return _PortHistoryASCIIBuilder.ToString();
             }
         }
+        public int NumberOfLines
+        {
+            get
+            {
+                return _MaxNumberOfLines;
+            }
+            set
+            {
+                _MaxNumberOfLines = value;
+                lock(_DataLockObject)
+                {
+                    _PortHistoryASCIIBuilder.Clear();
+                    _NumberOfLines = 0;
+                }
+            }
+        }
 
         private Listener _Listener;
         private StringBuilder _PortHistoryASCIIBuilder;
         private int _NumberOfLines;
         private List<int> _CharactersPerLine;
         private int _MaxNumberOfLines;
+        private object _DataLockObject = new object();
 
         public RawPortDataViewModel(Listener listener)
         {
@@ -38,17 +55,19 @@ namespace WPFLoggerDemo.ViewModels
 
         public void SentenceReceived(string sentence)
         {
-            _NumberOfLines++;
-            _CharactersPerLine.Add(sentence.Length);
-            _PortHistoryASCIIBuilder.Append(sentence.Replace(_Listener.LineEndChars,""));
-
-            if(_NumberOfLines > _MaxNumberOfLines)
+            lock (_DataLockObject)
             {
-                _NumberOfLines--;
-                _PortHistoryASCIIBuilder.Remove(0, _CharactersPerLine[0]);
-                _CharactersPerLine.RemoveAt(0);
-            }
+                _NumberOfLines++;
+                _CharactersPerLine.Add(sentence.Length);
+                _PortHistoryASCIIBuilder.Append(sentence.Replace(_Listener.LineEndChars, ""));
 
+                if (_NumberOfLines > _MaxNumberOfLines)
+                {
+                    _NumberOfLines--;
+                    _PortHistoryASCIIBuilder.Remove(0, _CharactersPerLine[0]);
+                    _CharactersPerLine.RemoveAt(0);
+                }
+            }
             RaisePropertyChanged("PortHistoryASCII");
         }
     }

@@ -4,22 +4,46 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFLoggerDemo.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
-            <RowDefinition />
-            <RowDefinition Height="35"/>
-        </Grid.RowDefinitions>
+    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Content="Port Activity" />
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Label 
+                   HorizontalAlignment="Center" 
+                   Content="Port Activity" 
+                   FontWeight="Bold" FontSize="15"/>
+                <Separator />
+            </StackPanel>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="10,0,0,0" Cursor="">
-            <TextBox Text="{Binding Path=PortHistoryASCII, Mode=OneWay}"/>
-        </ScrollViewer>
-        
-        <Button  Content="Clear" Width="50" Height="25" Grid.Row="2"/>
-        
-    </Grid>
+            <ScrollViewer Grid.Row="1" Grid.Column="0" Margin="5,5,0,5" Cursor="">
+                <TextBox Text="{Binding Path=PortHistoryASCII, Mode=OneWay}"/>
+            </ScrollViewer>
+
+            <DockPanel Grid.Row="1" Grid.Column="1">
+                <Button DockPanel.Dock="Top"
+                        VerticalAlignment="Top"
+                        Width="50" Height="25"
+                        Content="Clear"  />
+                <DockPanel DockPanel.Dock="Top">
+                    <Label Content="Lines : " DockPanel.Dock="Left"/>
+                    <xctk:IntegerUpDown DockPanel.Dock="Right" Width="50" HorizontalAlignment="Stretch"
+                        Value="{Binding NumberOfLines}" />
+                </DockPanel>
+                <Label />
+            </DockPanel>
+            
+
+        </Grid>
+    </Border>
 </UserControl>

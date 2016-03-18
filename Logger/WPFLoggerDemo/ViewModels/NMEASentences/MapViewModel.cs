@@ -9,7 +9,7 @@ using System.IO;
 
 namespace WPFLoggerDemo.ViewModels.NMEASentences
 {
-    public class MapViewModel : ViewModelBase, IListenerSubscriber, IDisposable
+    public class MapViewModel : DataViewModelBase, IListenerSubscriber, IDisposable
     {
         public string BrowserAddress
         {
@@ -39,10 +39,6 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
         public CefSharp.Wpf.ChromiumWebBrowser Browser { get; set; }
 
         #region Private Fields
-        private Listener _Listener;
-
-        // example google maps link https://www.google.com/maps/place/@4916.45,N,12311.12,W
-        private string _GoolgeMaps = @"https://www.google.com/maps/place/@";
         private string _GoogleMapsLocation;
         private string _BrowserAddress;
 
@@ -52,7 +48,7 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
         private string _LocalPage;
         #endregion
 
-        public MapViewModel(Listener listener)
+        public MapViewModel(Listener listener) : base(listener,"Map View")
         {
             _MinUpdateRate = new TimeSpan(0, 0, 3);
             _LastUpdate = DateTime.Now;
@@ -61,7 +57,7 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
             _LocalPage = Path.GetTempPath() + "GPSMapPage.html";
         }
 
-        public void SentenceReceived(string sentence)
+        public new void SentenceReceived(string sentence)
         {
             
             if (sentence.Contains("GPGLL"))
@@ -119,9 +115,10 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
 
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
-            System.IO.File.Delete(_LocalPage);
+            File.Delete(_LocalPage);
+            base.Dispose();
         }
     }
 }
