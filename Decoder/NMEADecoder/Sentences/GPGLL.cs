@@ -43,7 +43,7 @@ namespace NMEA_Tools.Decoder.Sentences
         {
             if(value == null)
             {
-                throw new NullReferenceException("The value of a GPGLL string must not be null");
+                return;
             }
 
             string[] splitSentence = value.Split(Sentence._SentenceSplitChars);

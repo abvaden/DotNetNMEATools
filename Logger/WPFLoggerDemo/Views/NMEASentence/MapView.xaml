@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFLoggerDemo.Views.NMEASentence"
              xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             xmlns:Views="clr-namespace:WPFLoggerDemo.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
@@ -14,9 +15,10 @@
             <Label Content="{Binding Path=Latitude}" DockPanel.Dock="Right" Name="LatitudeLabel" />
             <Label Content="Latitude : " DockPanel.Dock="Right" HorizontalAlignment="Right" />
         </DockPanel>
-        <cefSharp:ChromiumWebBrowser Address="{Binding Path=BrowserAddress, Mode=TwoWay}" 
-                                     DockPanel.Dock="Bottom" 
-                                     Height="{Binding Path=BrowserHeight, Mode=TwoWay}"
-                                     Width="{Binding Path=BrowserWidth, Mode=TwoWay}"/>
+        <cefSharp:ChromiumWebBrowser Views:SizeObserver.Observe="True"
+                                     Views:SizeObserver.ObservedHeight="{Binding Path=BrowserHeight, Mode=OneWayToSource}"
+                                     Views:SizeObserver.ObservedWidth="{Binding Path=BrowserWidth, Mode=OneWayToSource}"
+                                     Address="{Binding Path=BrowserAddress, Mode=TwoWay}" 
+                                     DockPanel.Dock="Bottom" />
     </DockPanel>
 </UserControl>

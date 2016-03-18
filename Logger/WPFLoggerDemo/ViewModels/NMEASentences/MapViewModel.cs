@@ -15,14 +15,6 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
         {
             get
             {
-                /*
-                string key = "AIzaSyC3xLwB_Z7chKbaSvWzqZxljXGa-TGo8IM";
-                string page = string.Format("<iframe src=\"https://www.google.com/maps/embed/v1/view?center={0},{1}&key={2} allowfullscreen />",
-                              Longitude,
-                              Latitude,
-                              key);
-                return page;
-                */
                 string value = "file://" + _LocalPage;
                 return value.Replace("\\","/");
             }
@@ -39,13 +31,13 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
         public CefSharp.Wpf.ChromiumWebBrowser Browser { get; set; }
 
         #region Private Fields
-        private string _GoogleMapsLocation;
         private string _BrowserAddress;
 
         private DateTime _LastUpdate;
         private TimeSpan _MinUpdateRate;
 
         private string _LocalPage;
+        private NMEA_Tools.Decoder.Sentences.GPGLL _GPGLL;
         #endregion
 
         public MapViewModel(Listener listener) : base(listener,"Map View")
@@ -64,13 +56,10 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
             {
                 try
                 {
-                    NMEA_Tools.Decoder.Sentences.GPGLL gpgll = new NMEA_Tools.Decoder.Sentences.GPGLL(sentence);
+                    _GPGLL = new NMEA_Tools.Decoder.Sentences.GPGLL(sentence);
 
-                    _GoogleMapsLocation = String.Format("{0},{1}",
-                    gpgll.Longitude.Value, gpgll.Latitude.Value);
-
-                    Longitude = gpgll.Longitude.Value;
-                    Latitude = gpgll.Latitude.Value;
+                    Longitude = _GPGLL.Longitude.Value;
+                    Latitude = _GPGLL.Latitude.Value;
 
                     if ((DateTime.Now - _LastUpdate) > _MinUpdateRate)
                     {
@@ -92,27 +81,31 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
         private void _UpdateLocalPage()
         {
             string html = String.Format(
-                    @"<DOCTYPE html>
+@"<DOCTYPE html>
 <html>
 <head>
 	<title>Test Page</title>
 </head>
 <body>
-	<iframe src=""https://www.google.com/maps/embed/v1/place?q={0},{1}&key=AIzaSyC3xLwB_Z7chKbaSvWzqZxljXGa-TGo8IM"" />
+	<iframe width=""{0}"" height=""{1}"" frameborder=""0"" style=""border: 0""
+src = ""https://www.google.com/maps/embed/v1/view?zoom={4}&center={2},{3}&key=AIzaSyC3xLwB_Z7chKbaSvWzqZxljXGa-TGo8IM"" allowfullscreen ></iframe>
 </body>
-</html> ",
-                    Latitude.Replace(",", ""),
-                    Longitude.Replace(",", ""));
+</html>",
+                     Convert.ToDouble(BrowserWidth) - 25,
+                     Convert.ToDouble(BrowserHeight) - 25,
+                     _GPGLL.Longitude.Degrees,
+                     _GPGLL.Latitude.Degrees,
+                     16);
 
             File.Delete(_LocalPage);
-            using (FileStream fileStream = System.IO.File.Create(_LocalPage))
+            _LocalPage = Path.GetTempFileName().Replace(".tmp", ".html");
+            using (FileStream fileStream = File.Create(_LocalPage))
             {
                 using (StreamWriter writer = new StreamWriter(fileStream))
                 {
                     writer.Write(html);
                 }
             }
-
         }
 
         public new void Dispose()

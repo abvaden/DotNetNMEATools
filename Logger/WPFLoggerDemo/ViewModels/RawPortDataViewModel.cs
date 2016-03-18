@@ -30,6 +30,7 @@ namespace WPFLoggerDemo.ViewModels
                 lock(_DataLockObject)
                 {
                     _PortHistoryASCIIBuilder.Clear();
+                    _CharactersPerLine.Clear();
                     _NumberOfLines = 0;
                 }
             }

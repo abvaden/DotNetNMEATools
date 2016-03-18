@@ -26,7 +26,25 @@ namespace NeamDecoder_Tests
                 Assert.IsNotNull(gpgll.FixTime);
                 Assert.IsNotNull(gpgll.ActiveState);
 			}
-
 		}
+
+        [Test]
+        public void GPVTGDecoding()
+        {
+            string[] gppgtvSentences = new string[]
+            {
+                "$GPVTG,,T,,M,0.00,N,0.0,K,D*1",
+                "$GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48"
+            };
+
+            for(int i =0; i < gppgtvSentences.Length; i++)
+            {
+                GPVTG gpvtg = new GPVTG(gppgtvSentences[i]);
+                Assert.IsNotNull(gpvtg.MagneticTrack);
+                Assert.IsNotNull(gpvtg.TrueTrack);
+                Assert.IsNotNull(gpvtg.GroundSpeed);
+            }
+        }
+        
 	}
 }
