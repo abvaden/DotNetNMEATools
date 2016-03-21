@@ -53,6 +53,7 @@ namespace WPFLoggerDemo
             AvailableViewModels.Add(new ViewModels.NMEASentences.GPGLLWordsViewModel(_Listerner));
             AvailableViewModels.Add(new ViewModels.NMEASentences.GPVTGViewModel(_Listerner));
             AvailableViewModels.Add(new ViewModels.NMEASentences.GPGSAViewModel(_Listerner));
+            AvailableViewModels.Add(new ViewModels.NMEASentences.GPGSVViewModel(_Listerner));
         }
     }
 }
