@@ -33,8 +33,9 @@ namespace NeamDecoder_Tests
         {
             string[] gppgtvSentences = new string[]
             {
-                "$GPVTG,,T,,M,0.00,N,0.0,K,D*1",
-                "$GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48"
+                "$GPVTG,,T,,M,,N,,K*48",
+                "$GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48",
+                "$GPVTG,360.0,T,348.7,M,000.0,N,000.0,K*43"
             };
 
             for(int i =0; i < gppgtvSentences.Length; i++)

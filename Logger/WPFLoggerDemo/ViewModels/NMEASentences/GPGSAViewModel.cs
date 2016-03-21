@@ -35,9 +35,13 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
                     {
                         Mode = _GPGSA.Mode.ToString() + " / 3D"; 
                     }
-                    else
+                    else if(_GPGSA.Dimension == GSADimension.Two)
                     {
                         Mode = _GPGSA.Mode.ToString() + " / 2D";
+                    }
+                    else
+                    {
+                        Mode = _GPGSA.Mode.ToString() + " / " + _GPGSA.Dimension.ToString();
                     }
                     
                     HDOP = _GPGSA.HDOP.ToString();

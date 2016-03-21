@@ -112,6 +112,7 @@ namespace NMEA_Tools.Decoder.Sentences
 
         public GPGSA(string value) : base(value)
         {
+            #region Error checking on the input value
             if (value == null)
             {
                 throw new Exceptions.SentenceFormatException("The value of the sentence must not be null", null);
@@ -129,6 +130,7 @@ namespace NMEA_Tools.Decoder.Sentences
                 throw new Exceptions.SentenceFormatException(String.Format(
                     "The sentence does not have the proper number of words 18 expected {0} received", splitSentence.Length), null);
             }
+            #endregion
 
             #region Mode 
             if(splitSentence[1].ToUpper() == "M" )
@@ -156,7 +158,7 @@ namespace NMEA_Tools.Decoder.Sentences
             }
             else
             {
-                throw new Exceptions.WordFormatException("The value given for dimension is invalid, expected 2D/2d or 3D/3d received " + splitSentence[2], null);
+                _Dimension = GSADimension.Unknown;
             }
             #endregion
 
@@ -196,5 +198,5 @@ namespace NMEA_Tools.Decoder.Sentences
     }
 
     public enum GSAMode { Manual, Automatic }
-    public enum GSADimension { Two, Three }
+    public enum GSADimension { Two, Three, Unknown }
 }

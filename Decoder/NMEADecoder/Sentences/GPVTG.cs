@@ -30,6 +30,7 @@ namespace NMEA_Tools.Decoder.Sentences
 
         public GPVTG(string value) : base(value)
         {
+            #region Input Validation
             if (value == null)
             {
                 return;
@@ -37,10 +38,10 @@ namespace NMEA_Tools.Decoder.Sentences
 
             string[] splitSentence = value.Split(Sentence._SentenceSplitChars);
 
-            if (splitSentence.Length != 11)
+            if (splitSentence.Length != 10)
             {
                 throw new Exceptions.WordFormatException(String.Format(
-                    "The GPVTG sentence does not contain the proper number of words {0} provided 10 expected: {1}",
+                    "The GPVTG sentence does not contain the proper number of words {0} provided 8 expected: {1}",
                     splitSentence.Length - 2, value), null);
             }
 
@@ -48,7 +49,9 @@ namespace NMEA_Tools.Decoder.Sentences
             {
                 throw new Exceptions.WordFormatException("The GPVTG sentence does not have the proper preamble + Data Type $GPVTG expected " + splitSentence[0] + " provided", null);
             }
+            #endregion
 
+            #region Track
             Track track1 = new Track(splitSentence[1] + "," + splitSentence[2]);
             Track track2 = new Track(splitSentence[3] + "," + splitSentence[4]);
 
@@ -69,7 +72,8 @@ namespace NMEA_Tools.Decoder.Sentences
             {
                 this.MagneticTrack = track2;
             }
-            
+            #endregion
+
             this.GroundSpeed = new GroundSpeed(splitSentence[5]);
 
             this.Checksum = new Checksum(splitSentence[8]);

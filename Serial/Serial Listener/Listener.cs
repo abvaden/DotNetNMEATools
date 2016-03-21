@@ -11,10 +11,10 @@ namespace NMEA_Tools.Serial
     /// TODO: Improve the thread safety of this class and develop test to ensure that it is thread safe.
     // of special note is the LastString Property, there could be issues regarding the thread safety of that 
     /// <summary>
-    /// The listener class will listen to serial port traffic for lines of data and will push notifications to subscrubers
+    /// The listener class will listen to serial port traffic for lines of data and will push notifications to subscribers
     /// when the line end characters are met
     /// </summary>
-    public class Listener
+    public class Listener : IDisposable
     {
         #region Public Properties
         public string PortName
@@ -175,7 +175,7 @@ namespace NMEA_Tools.Serial
 
         private ICollection<IListenerSubscriber> _Subscribers;
         private string _LastSentence;
-        private Task _NotifySubscribersTask;
+        private List<Task> _NotifySubscribersTaskList;
         private object _NotifyingSubscriberLock = new object();
 
         private byte[] _SentenceEndChars;
@@ -188,7 +188,7 @@ namespace NMEA_Tools.Serial
         #endregion
 
         #region Private Static Fields
-        private static string _ProtInializedExceptionMessage= "Can not change base port properties once the listening port Has been Initalized";
+        private static string _ProtInializedExceptionMessage= "Can not change base port properties once the listening port Has been Initialized";
         #endregion
 
         public Listener()
@@ -203,7 +203,7 @@ namespace NMEA_Tools.Serial
             _LastSentence = String.Empty;
             _ReceivedBytes = new ConcurrentQueue<byte>();
 
-            _NotifySubscribersTask = new Task(new Action(_StringReceived));
+            _NotifySubscribersTaskList = new List<Task>();
         }
 
         #region Public Methods
@@ -225,7 +225,7 @@ namespace NMEA_Tools.Serial
         {
             if(!_IsInitalizied)
             {
-                throw new ListenerException("Port must be initalizied before opening", null);
+                throw new ListenerException("Port must be initialized before opening", null);
             }
 
             _Port.Open();
@@ -251,6 +251,21 @@ namespace NMEA_Tools.Serial
                 _Subscribers.Remove(listener);
             }
         }
+
+        public void Dispose()
+        {
+            if(_ReceiveLoop)
+            {
+                _ReceiveLoop = false;
+            }
+            
+            for(int i = 0; i < _NotifySubscribersTaskList.Count; i++)
+            {
+                _NotifySubscribersTaskList[i].Dispose();
+            }
+
+            _Port.Dispose();
+        }
         #endregion
 
         #region Private Methods
@@ -260,7 +275,7 @@ namespace NMEA_Tools.Serial
             {
                 if (_PortName == null) 
                 {
-                    throw new ListenerException("Port name not initalized port can not be setup",null);
+                    throw new ListenerException("Port name not initialized port can not be setup",null);
                 }
 
                 if((_BaudRate != default(int)) && (_DataBits == default(int)))
@@ -276,7 +291,7 @@ namespace NMEA_Tools.Serial
             }
             catch (Exception excpt)
             {
-                ListenerException exception = new ListenerException("Error while initalizing the com port",excpt);
+                ListenerException exception = new ListenerException("Error while initializing the com port",excpt);
                 throw exception;
             }
 
@@ -320,7 +335,7 @@ namespace NMEA_Tools.Serial
                     }
                     #endregion
 
-                    #region Check if the byte was part of the the line ending chars if not then reset and start looking for the ending chars again
+                    #region Check if the byte was part of the line ending chars if not then reset and start looking for the ending chars again
                     if (processingLastByteWasEnding || (lastByte == _SentenceEndChars[0]))
                     {
                         processingLastByteWasEnding = true;
@@ -344,9 +359,23 @@ namespace NMEA_Tools.Serial
             sentenceChars.Remove(sentenceChars.Length - 1 - _SentenceEndChars.Length, _SentenceEndChars.Length);
 
             _LastSentence = sentenceChars.ToString();
-            _NotifySubscribers();
 
-            _NotifySubscribersTask = new Task(new Action(_StringReceived));
+            if(_NotifySubscribersTaskList.Count < 10)
+            {
+                Task notifySubscribersTask = new Task(new Action(_NotifySubscribers));
+                _NotifySubscribersTaskList.Add(notifySubscribersTask);
+                notifySubscribersTask.Start();
+            }
+            
+            for (int i = 0; i < _NotifySubscribersTaskList.Count; i++)
+            {
+                if(_NotifySubscribersTaskList[i].IsCompleted)
+                {
+                    _NotifySubscribersTaskList[i].Dispose();
+                    _NotifySubscribersTaskList.RemoveAt(i);
+                }
+            }
+            
         }
 
         private void _PortReadThread()
@@ -385,7 +414,6 @@ namespace NMEA_Tools.Serial
 
         private void _SerialDataEvent(byte[] bytes)
         {
-            
             lock (_AddingLock)
             {
                 for (int i = 0; i < bytes.Length; i++)
@@ -393,7 +421,7 @@ namespace NMEA_Tools.Serial
                     // Get the byte that was just received
                     byte receivedByte = bytes[i];
 
-                    // Check if the byte was part of the the line ending chars if not then reset and start looking for the ending chars again
+                    // Check if the byte was part of the line ending chars if not then reset and start looking for the ending chars again
                     if (_LastByteWasEnding || (receivedByte == _SentenceEndChars[0]))
                     {
                         _LastByteWasEnding = true;
@@ -411,11 +439,11 @@ namespace NMEA_Tools.Serial
                     // Add the received bytes to the queue
                     _ReceivedBytes.Enqueue(receivedByte);
 
-                    // If we have have received the entire line ending sequence then start notifying subscribers and return so that the 
+                    // If we have received the entire line ending sequence then start notifying subscribers and return so that the 
                     // current method does not block execution
                     if ((_SentenceEndCharLast + 1) == _SentenceEndChars.Length)
                     {
-                        _NotifySubscribersTask.Start();
+                        _StringReceived();
                         _SentenceEndCharLast = -1;
                     }
                 }

@@ -45,12 +45,16 @@ namespace WPFLoggerDemo.ViewModels.NMEASentences
 
                     GroundSpeedKnots = value;
                     GroundSpeedKph = value;
+                    System.Diagnostics.Debug.WriteLine(excpt.Message);
                 }
 
                 RaisePropertyChanged("GroundSpeedKnots");
                 RaisePropertyChanged("GroundSpeedKph");
                 RaisePropertyChanged("TrueHeading");
-                RaisePropertyChanged("MagneticHeading");            }
+                RaisePropertyChanged("MagneticHeading");
+
+                
+            }
         }
     }
 }
