@@ -46,5 +46,25 @@ namespace NeamDecoder_Tests
             }
         }
         
+        [Test]
+        public void GPGSADecoding()
+        {
+            string[] gpgsaSentences = new string[]
+            {
+                "$GPGSA,A,3,,,,,,16,18,,22,24,,,3.6,2.1,2.2*3C",
+                "$GPGSA,A,3,19,28,14,18,27,22,31,39,,,,,1.7,1.0,1.3*35"
+            };
+
+            for (int i = 0; i < gpgsaSentences.Length; i++)
+            {
+                GPGSA gpgsa = new GPGSA(gpgsaSentences[i]);
+                Assert.IsNotNull(gpgsa.Dimension);
+                Assert.IsNotNull(gpgsa.Mode);
+                Assert.IsNotNull(gpgsa.HDOP);
+                Assert.IsNotNull(gpgsa.VDOP);
+                Assert.IsNotNull(gpgsa.PDOP);
+                Assert.IsNotNull(gpgsa.SatIDs);
+            }
+        }
 	}
 }

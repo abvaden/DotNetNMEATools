@@ -52,12 +52,12 @@ namespace NMEA_Tools.Decoder.Sentences
             {
                 throw new Exceptions.WordFormatException(String.Format(
                     "The GPGLL sentence does not contain the proper number of words {0} provided 8 expected: {1}",
-                    splitSentence.Length,value));
+                    splitSentence.Length,value), null);
             }
 
             if (splitSentence[0] != "$GPGLL")
             {
-                throw new Exceptions.WordFormatException("The GPGLL sentence does not have the proper preamble + Data Type $GPGLL expected " + splitSentence[0] + " provided");
+                throw new Exceptions.WordFormatException("The GPGLL sentence does not have the proper preamble + Data Type $GPGLL expected " + splitSentence[0] + " provided", null);
             }
 
 			this.Longitude = new Longitude(splitSentence [1] + "," + splitSentence [2]);

@@ -44,6 +44,7 @@
     <Compile Include="Exceptions\SentenceFormatException.cs" />
     <Compile Include="Exceptions\WordFormatException.cs" />
     <Compile Include="Sentences\GPGLL.cs" />
+    <Compile Include="Sentences\GPGSA.cs" />
     <Compile Include="Sentences\GPVTG.cs" />
     <Compile Include="Sentences\Sentence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

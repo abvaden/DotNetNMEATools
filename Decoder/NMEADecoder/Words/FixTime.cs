@@ -27,21 +27,21 @@ namespace NMEA_Tools.Decoder.Words
 			double testVar;
 			if( !double.TryParse(value,out testVar))
             {
-                throw new Exceptions.WordFormatException("The length of the Fix Time is not valid, only values are accepted, " + value + " was submitted");
+                throw new Exceptions.WordFormatException("The length of the Fix Time is not valid, only values are accepted, " + value + " was submitted", null);
             }
 
 
             if( !Byte.TryParse(value.Substring(0, 2), out _Hours) && (_Hours <= 24))
             {
-                throw new Exceptions.WordFormatException("The format for the Hours value is invalid value must be two digits and <= 24 " + value.Substring(0, 2) + " provided");
+                throw new Exceptions.WordFormatException("The format for the Hours value is invalid value must be two digits and <= 24 " + value.Substring(0, 2) + " provided", null);
             }
             if (!Byte.TryParse(value.Substring(2, 2), out _Minutes) && (_Minutes <= 60))
             {
-                throw new Exceptions.WordFormatException("The format for the Minutes value is invalid value must be two digits and <= 60 " + value.Substring(2, 2) + " provided");
+                throw new Exceptions.WordFormatException("The format for the Minutes value is invalid value must be two digits and <= 60 " + value.Substring(2, 2) + " provided", null);
             }
             if (!float.TryParse(value.Substring(4, 2), out _Seconds) && (_Seconds <=  60))
             {
-                throw new Exceptions.WordFormatException("The format for the Seconds value is invalid value must be two digits and <= 60 " + value.Substring(4, 2) + " provided");
+                throw new Exceptions.WordFormatException("The format for the Seconds value is invalid value must be two digits and <= 60 " + value.Substring(4, 2) + " provided", null);
             }
 			_TimeValue = new DateTime(1, 1, 1, _Hours, _Minutes, (int)_Seconds);
         }

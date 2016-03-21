@@ -8,7 +8,7 @@ namespace NMEA_Tools.Decoder.Exceptions
 {
     public class WordFormatException : Exception
     {
-        public WordFormatException(string message)
+        public WordFormatException(string message, Exception innerException) : base(message, innerException)
         {
              
         }

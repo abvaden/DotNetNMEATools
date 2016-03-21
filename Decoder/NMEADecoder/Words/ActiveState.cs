@@ -29,7 +29,7 @@ namespace NMEA_Tools.Decoder.Words
             }
             else
             {
-                throw new Exceptions.WordFormatException("Invalid value for ActiveState only A and V are allowed " + value + " was given");
+                throw new Exceptions.WordFormatException("Invalid value for ActiveState only A and V are allowed " + value + " was given", null);
             }
             _Value = value;
         }

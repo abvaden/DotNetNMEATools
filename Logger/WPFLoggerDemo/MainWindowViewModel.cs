@@ -51,6 +51,8 @@ namespace WPFLoggerDemo
             AvailableViewModels = new ObservableCollection<DataViewModelBase>();
             AvailableViewModels.Add(new MapViewModel(_Listerner));
             AvailableViewModels.Add(new ViewModels.NMEASentences.GPGLLWordsViewModel(_Listerner));
+            AvailableViewModels.Add(new ViewModels.NMEASentences.GPVTGViewModel(_Listerner));
+            AvailableViewModels.Add(new ViewModels.NMEASentences.GPGSAViewModel(_Listerner));
         }
     }
 }

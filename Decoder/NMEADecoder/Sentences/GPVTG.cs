@@ -37,21 +37,39 @@ namespace NMEA_Tools.Decoder.Sentences
 
             string[] splitSentence = value.Split(Sentence._SentenceSplitChars);
 
-            if (splitSentence.Length != 9)
+            if (splitSentence.Length != 11)
             {
                 throw new Exceptions.WordFormatException(String.Format(
                     "The GPVTG sentence does not contain the proper number of words {0} provided 10 expected: {1}",
-                    splitSentence.Length, value));
+                    splitSentence.Length - 2, value), null);
             }
 
             if (splitSentence[0] != "$GPVTG")
             {
-                throw new Exceptions.WordFormatException("The GPVTG sentence does not have the proper preamble + Data Type $GPVTG expected " + splitSentence[0] + " provided");
+                throw new Exceptions.WordFormatException("The GPVTG sentence does not have the proper preamble + Data Type $GPVTG expected " + splitSentence[0] + " provided", null);
             }
 
+            Track track1 = new Track(splitSentence[1] + "," + splitSentence[2]);
+            Track track2 = new Track(splitSentence[3] + "," + splitSentence[4]);
 
-            this.MagneticTrack = new Track(splitSentence[1]);
-            this.TrueTrack = new Track(splitSentence[3]);
+            if (track1.Type == TrackType.True)
+            {
+                this.TrueTrack = track1;
+            }
+            else if(track1.Type == TrackType.Magnetic)
+            {
+                this.MagneticTrack = track1;
+            }
+
+            if (track2.Type == TrackType.True)
+            {
+                this.TrueTrack = track2;
+            }
+            else if (track2.Type == TrackType.Magnetic)
+            {
+                this.MagneticTrack = track2;
+            }
+            
             this.GroundSpeed = new GroundSpeed(splitSentence[5]);
 
             this.Checksum = new Checksum(splitSentence[8]);

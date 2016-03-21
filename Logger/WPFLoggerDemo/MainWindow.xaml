@@ -19,6 +19,14 @@
             <DataTemplate DataType="{x:Type NMEAViewModels:MapViewModel}">
                 <NMEAViews:MapView DataContext="{Binding}" />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type NMEAViewModels:GPVTGViewModel}">
+                <NMEAViews:GPVTG DataContext="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type NMEAViewModels:GPGSAViewModel}">
+                <NMEAViews:GPGSA DataContext="{Binding}" />
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>

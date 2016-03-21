@@ -34,6 +34,7 @@
                 <Button DockPanel.Dock="Top"
                         VerticalAlignment="Top"
                         Width="50" Height="25"
+                        Margin="5,10,5,10"
                         Content="Clear"  />
                 <DockPanel DockPanel.Dock="Top">
                     <Label Content="Lines : " DockPanel.Dock="Left"/>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WPFLoggerDemo.Views.NMEASentence.GPGLLWords"
+﻿<UserControl x:Class="WPFLoggerDemo.Views.NMEASentence.GPGSA"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,6 +13,7 @@
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -20,39 +21,48 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <Label HorizontalAlignment="Center"
-                   FontWeight="Bold"
-                   Content="GPGLLL Words"/>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                    HorizontalAlignment="Stretch">
+            <Label FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Content=" GPGSA Words" />
             <Separator />
         </StackPanel>
         
-        <Label Grid.Row="1" Grid.Column="0" 
+
+        <Label Grid.Row="1" Grid.Column="0"
                HorizontalAlignment="Right"
-               Content="Longitude : "/>
+               Content="Mode : "/>
         <Label Grid.Row="1" Grid.Column="1"
                HorizontalAlignment="Left"
-               Content="{Binding Path=Longitude}" />
+               Content="{Binding Path=Mode}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" 
+        <Label Grid.Row="2" Grid.Column="0"
                HorizontalAlignment="Right"
-               Content="Latitude : "/>
+               Content="Number of Satalites : "/>
         <Label Grid.Row="2" Grid.Column="1"
                HorizontalAlignment="Left"
-               Content="{Binding Path=Latitude}" />
+               Content="{Binding Path=NumberSats}"/>
 
         <Label Grid.Row="3" Grid.Column="0"
                HorizontalAlignment="Right"
-               Content="Active State : "/>
+               Content="PDOP : "/>
         <Label Grid.Row="3" Grid.Column="1"
                HorizontalAlignment="Left"
-               Content="{Binding Path=ActiveState}" />
+               Content="{Binding Path=PDOP}"/>
 
         <Label Grid.Row="4" Grid.Column="0"
                HorizontalAlignment="Right"
-               Content="Fix Time : "/>
+               Content="HDOP : "/>
         <Label Grid.Row="4" Grid.Column="1"
                HorizontalAlignment="Left"
-               Content="{Binding Path=FixTime}" />
+               Content="{Binding Path=HDOP}"/>
+
+        <Label Grid.Row="5" Grid.Column="0"
+               HorizontalAlignment="Right"
+               Content="VDOP : "/>
+        <Label Grid.Row="5" Grid.Column="1"
+               HorizontalAlignment="Left"
+               Content="{Binding Path=VDOP}"/>
     </Grid>
 </UserControl>

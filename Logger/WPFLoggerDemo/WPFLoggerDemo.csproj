@@ -106,6 +106,8 @@
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="ViewModels\NMEASentences\DataViewModelBase.cs" />
     <Compile Include="ViewModels\NMEASentences\GPGLLWordsViewModel.cs" />
+    <Compile Include="ViewModels\NMEASentences\GPGSAViewModel.cs" />
+    <Compile Include="ViewModels\NMEASentences\GPVTGViewModel.cs" />
     <Compile Include="ViewModels\NMEASentences\MapViewModel.cs" />
     <Compile Include="ViewModels\RawPortDataViewModel.cs" />
     <Compile Include="ViewModels\SerialPortListenerSetupViewModel.cs" />
@@ -115,6 +117,12 @@
     </Compile>
     <Compile Include="Views\NMEASentence\GPGLLWords.xaml.cs">
       <DependentUpon>GPGLLWords.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NMEASentence\GPGSA.xaml.cs">
+      <DependentUpon>GPGSA.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NMEASentence\GPVTG.xaml.cs">
+      <DependentUpon>GPVTG.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NMEASentence\MapView.xaml.cs">
       <DependentUpon>MapView.xaml</DependentUpon>
@@ -144,6 +152,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NMEASentence\GPGLLWords.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NMEASentence\GPGSA.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NMEASentence\GPVTG.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

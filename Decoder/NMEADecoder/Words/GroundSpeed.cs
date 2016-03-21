@@ -8,6 +8,20 @@ namespace NMEA_Tools.Decoder.Words
 {
     public class GroundSpeed : Word
     {
+        public double Speed
+        {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+                _Speed = value;
+            }
+        }
+
+        private double _Speed;
+
         public GroundSpeed(string vlaue) : base("Gorund Speed")
         {
 
